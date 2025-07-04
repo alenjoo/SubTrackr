@@ -96,17 +96,12 @@ connect(
     connectTimeoutMS=30000,  # 30 seconds timeout
     socketTimeoutMS=30000,
 )
-#DATABASES = {
-#    'default': {
-#       'ENGINE': 'djongo',
-#      'NAME': 'my_django_react_db',  # Database name
-#     'ENFORCE_SCHEMA': False,  # Avoid schema enforcement for MongoDB
-#        'CLIENT': {
-#            'host': os.getenv('MONGODB_URI'),
-#            'ssl': True,  # Required for MongoDB Atlas
-#        }
-#    }
-#}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

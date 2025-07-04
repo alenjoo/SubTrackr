@@ -6,34 +6,42 @@ from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
-
-class SessionLoginView(APIView):
-    @method_decorator(ensure_csrf_cookie)
-    def post(self, request):
-        email = request.data.get("email")
-        password = request.data.get("password")
-
-        user = authenticate(request, username=email, password=password)
-        if user is not None:
-            login(request, user)
-            return Response({"message": "Login successful", "email": user.email})
-        return Response({"error": "Invalid credentials"}, status=401)
-
-class SessionLogoutView(APIView):
-    def post(self, request):
-        logout(request)
-        return Response({"message": "Logged out successfully"})
-
 from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from django.contrib.auth.models import User
-from api.models import UserProfile
+from django.http import JsonResponse
+from mongoengine import DoesNotExist
 
 
 
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from api.models import UserProfile
+
+@api_view(['POST'])
+
+def login_user(request):
+    email = request.data.get("email")
+    password = request.data.get("password")
+
+    try:
+        
+        mongo_user = UserProfile.objects.get(email=email)
+        
+        if mongo_user.check_password(password):
+            
+            django_user, created = User.objects.get_or_create(
+                username=email,
+                defaults={'password': 'unused'}  
+            )
+            
+            login(request, django_user)
+            
+            return JsonResponse({
+                "message": "Login successful",
+                "email": email,
+                "role": mongo_user.role
+            })
+        else:
+            return JsonResponse({"message": "Invalid password"}, status=401)
+            
+    except DoesNotExist:
+        return JsonResponse({"message": "User not found"}, status=401)
 
 @api_view(['POST'])
 def register_user(request):
