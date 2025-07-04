@@ -50,4 +50,32 @@
     font-weight: bold;
     color: #333;
   }
-  
+
+  .user-reg-login-link {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.user-reg-login-link:hover {
+  color: #0056b3;
+}
+
+
+.user-reg-password {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.user-reg-role {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0 20px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #fff;
+}
