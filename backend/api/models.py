@@ -1,4 +1,4 @@
-from mongoengine import Document, EmailField, StringField, DateTimeField
+from mongoengine import Document, EmailField, StringField, DateTimeField,DecimalField
 import datetime
 from django.contrib.auth.hashers import make_password, check_password
 
@@ -22,3 +22,16 @@ class UserProfile(Document):
 
     def __str__(self):
         return f"{self.email} ({self.role})"
+
+class Plan(Document):
+    name=StringField(required=True)
+    price=DecimalField(required=True,precision=2)
+    interval=StringField(choices=["Monthly","Yearly"],default="Monthly")
+    api_quota=DecimalField(required=True,precision=2)
+    description=StringField(required=True)
+    owner_email=StringField(required=True)
+
+    meta={
+        "collection":"plan",
+        "index":['name']
+    }

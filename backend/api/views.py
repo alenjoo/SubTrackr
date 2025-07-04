@@ -1,10 +1,7 @@
-from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import UserProfile
-from django.contrib.auth import authenticate, login, logout
-from django.views.decorators.csrf import ensure_csrf_cookie
-from django.utils.decorators import method_decorator
+from .models import UserProfile,Plan
+from django.contrib.auth import  login
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
@@ -25,7 +22,7 @@ def login_user(request):
         
         if mongo_user.check_password(password):
             
-            django_user, created = User.objects.get_or_create(
+            django_user = User.objects.get_or_create(
                 username=email,
                 defaults={'password': 'unused'}  
             )
@@ -65,3 +62,33 @@ def register_user(request):
         "role": user.role
     })
 
+@api_view(['POST'])
+def create_plan(request):
+
+    user_email = request.user.username
+
+
+    name=request.data.get("name")
+    price=request.data.get("price")
+    interval=request.data.get("interval","Monthly")
+    api_quota=request.data.get("api_quota")
+    description=request.data.get("description")
+
+    plan=Plan(name=name,price=price,interval=interval,api_quota=api_quota,description=description,owner_email=user_email)
+    plan.save()
+
+    return Response({"message:Plan created successfully"})
+
+@api_view(['GET'])
+def get_plan(request):
+    user=request.user.username
+    plan=Plan.objects(owner_email=user)
+    data = [{
+        "id": str(p.id),
+        "name": p.name,
+        "price": float(p.price),
+        "interval": p.interval,
+        "api_quota": float(p.api_quota),
+        "description": p.description
+    } for p in plan]
+    return Response(data)

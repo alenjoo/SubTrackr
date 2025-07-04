@@ -6,7 +6,7 @@ import {useNavigate} from 'react-router-dom';
 export default function UserRegister() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("customer"); // default role
+  const [role, setRole] = useState("customer"); 
   const [message, setMessage] = useState("");
   const navigate=useNavigate();
 
