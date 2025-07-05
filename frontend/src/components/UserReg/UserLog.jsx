@@ -16,7 +16,13 @@ export default function UserLogin() {
       const res = await axios.post(
         "http://localhost:8000/api/login/",
         { email, password },
-        { withCredentials: true } 
+        {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': await getCsrfToken() // Add this function
+        } 
+      }
       );
 
       if (res.data && res.data.role) {
@@ -36,8 +42,14 @@ export default function UserLogin() {
     }
   };
 
+  async function getCsrfToken() {
+  const response = await axios.get('http://localhost:8000/api/csrf/', {
+    withCredentials: true
+  });
+  return response.data.csrfToken;
+}
   return (
-    <div className="user-reg-div1">
+    <div className="user-reg-div1"> 
       <h2 className="user-reg-h1">User Login</h2>
       <form className="user-reg-form" onSubmit={handleLogin}>
         <input

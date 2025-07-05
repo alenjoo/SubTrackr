@@ -19,12 +19,26 @@ export default function PlanForm({ onSuccess }) {
     e.preventDefault();
     try {
       await axios.post("http://localhost:8000/api/plans/", form);
+      await axios.post("http://localhost:8000/api/plans/", form, {
+  withCredentials: true, // ✅ Required for Django to recognize the session
+  headers: {
+    'Content-Type': 'application/json',
+    'X-CSRFToken': await getCsrfToken() // ✅ if CSRF protection is enabled
+  }
+});
+
       onSuccess();
       setForm({ name: "", price: "", interval: "monthly", api_quota: "", description: "" });
     } catch (err) {
       console.error("Failed to create plan:", err);
     }
   };
+async function getCsrfToken() {
+  const response = await axios.get("http://localhost:8000/api/csrf/", {
+    withCredentials: true,
+  });
+  return response.data.csrfToken;
+}
 
   return (
     <form onSubmit={handleSubmit} className="admin-form">

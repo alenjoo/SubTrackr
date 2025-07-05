@@ -1,4 +1,4 @@
-from mongoengine import Document, EmailField, StringField, DateTimeField,DecimalField
+from mongoengine import Document, EmailField, StringField, DateTimeField,DecimalField,ListField,ReferenceField
 import datetime
 from django.contrib.auth.hashers import make_password, check_password
 
@@ -7,6 +7,7 @@ class UserProfile(Document):
     password = StringField(required=True)  
     role = StringField(choices=["admin", "customer"], default="customer")
     created_at = DateTimeField(default=datetime.datetime.utcnow)
+    subscribed_plans=ListField(ReferenceField('Plan'))
 
     meta = {
         'collection': 'user_profile',

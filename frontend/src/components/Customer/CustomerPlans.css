@@ -1,0 +1,61 @@
+.cust-plan-container {
+  padding: 2rem;
+  font-family: sans-serif;
+  background-color: #f5f7fa;
+}
+
+.cust-plan-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.cust-plan-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.cust-plan-card {
+  background: white;
+  padding: 1.2rem;
+  border-radius: 10px;
+  width: 250px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.cust-plan-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.cust-plan-desc {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.cust-plan-price,
+.cust-plan-quota {
+  margin: 0.5rem 0;
+}
+
+.cust-plan-subscribe {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background-color 0.3s;
+}
+
+.cust-plan-subscribe:hover {
+  background-color: #2563eb;
+}
+
+.cust-plan-message {
+  margin-top: 1rem;
+  color: green;
+  font-weight: bold;
+}
